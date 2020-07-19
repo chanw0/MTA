@@ -23,7 +23,7 @@ install_github("chanw0/MTA")
 Once installed, the package can be loaded using:
 
 ```r
-library("adephylo")
+library("MTA")
 ```
 
 
