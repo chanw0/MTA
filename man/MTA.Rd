@@ -123,7 +123,7 @@ Wang C, Hu J, Blaser M J, Li H (2019). Longitudinal microbiome data analysis: mi
 # group2=array(NA, dim = c(N,P,T))
 # for(t in 1:T){
 #   betaT=rep(0,P)
-#   effect.size1=c(-1,2, -1)*min(beta0[causal.ind])*sin(t)
+#   effect.size1=c(-1,2, -1)/2*min(beta0[causal.ind])*sin(t)
 #   betaT[causal.ind]=effect.size1
 #   group2[, ,t] = rdirichlet(N,(beta0+betaT))}
 #

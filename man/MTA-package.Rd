@@ -22,7 +22,7 @@ Chan Wang, Jiyuan Hu, Martin J. Blaser, Huilin Li.
 Maintainer: Chan Wang <Chan.Wang@nyulangone.org>, Huilin Li <Huilin.Li@nyulangone.org>
 }
 \references{
-Wang C, Hu J, Blaser M J, Li H (2019). Longitudinal microbiome data analysis: microbial trend analysis, group comparison and classification.
+Wang C, Hu J, Blaser M J, Li H (2020). Longitudinal microbiome data analysis: microbial trend analysis, group comparison and classification.
 
 }
 \keyword{package}
