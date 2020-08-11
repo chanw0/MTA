@@ -115,7 +115,7 @@ Allresults=list(pvalue.tpc,qq,AllDiscover,Effect,SE)
 
 names(Allresults)=c("P value","Trend plot","Discover rate", "Factor score", "Standard error")
 
-} else {Allresults=list(pvalue.tpc,qq);
-     names(Allresults)=c("P value","Trend plot")}
+} else {Allresults=list(pvalue.tpc);
+     names(Allresults)=c("P value")}
 
   return(Allresults) }
