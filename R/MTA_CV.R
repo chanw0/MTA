@@ -10,7 +10,8 @@ MTA.cv=function(All.x,k,Laplacian.matrix,timevec,lambda1.set,lambda2.set,lambda3
   B = getbasismatrix(timevec, BS)
   Omega = getbasispenalty(BS)
 
-
+for (jj in 1:100) {
+  
   cv.group=sample(rep(seq_len(k), length.out = dim(All.x)[1]))
 
   allmse=NULL
@@ -41,6 +42,8 @@ MTA.cv=function(All.x,k,Laplacian.matrix,timevec,lambda1.set,lambda2.set,lambda3
       }
 
   large.in=which(allmse[,4]>0)
+  
+  if(length(large.in)>0) break;}
 
   tem.in=which.min(allmse[large.in,4]); tem.in=large.in[tem.in]
 
