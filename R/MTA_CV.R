@@ -18,9 +18,9 @@ for (jj in 1:100) {
   for(lambda1 in lambda1.set) for(lambda3 in lambda3.set) for(lambda2 in lambda2.set) {
 
         mse=0
-        for(rr in 1:k)
+        for(k_in in 1:k)
         {
-          tem.x=All.x[cv.group!=k,,]
+          tem.x=All.x[cv.group!=k_in,,]
 
           #       if(length(dim(tem.x))<3) {tem.x=array(NA, dim = c(1,dim(tem.x)[1],dim(tem.x)[2]))
           #        tem.x[1,,]=All.x[-rr,,]}
@@ -32,7 +32,7 @@ for (jj in 1:100) {
 
           if(sum(abs(f.updated))!=0) {
 
-            res=sapply(which(cv.group==k), function(x,aa,bb) {return(sum((aa[k,,]-bb)^2))},
+            res=sapply(which(cv.group==k_in), function(x,aa,bb) {return(sum((aa[k_in,,]-bb)^2))},
                    aa=All.x,bb=as.matrix(f.updated)%*%c.updated%*%(t(B)))
 
             mse=mse+mean(res)}  else {mse=0; break;}
