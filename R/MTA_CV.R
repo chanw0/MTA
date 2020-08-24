@@ -32,7 +32,7 @@ for (jj in 1:100) {
 
           if(sum(abs(f.updated))!=0) {
 
-            res=sapply(which(cv.group==k_in), function(x,aa,bb) {return(sum((aa[k_in,,]-bb)^2))},
+            res=sapply(which(cv.group==k_in), function(x,aa,bb) {return(sum((aa[x,,]-bb)^2))},
                    aa=All.x,bb=as.matrix(f.updated)%*%c.updated%*%(t(B)))
 
             mse=mse+mean(res)}  else {mse=0; break;}
