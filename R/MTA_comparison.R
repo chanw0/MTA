@@ -56,7 +56,7 @@ MTA_comparison=function(Controls, Cases,k,Laplacian.matrix,timevec,lambda1.set,
     cc.reference=rbind(cc.reference,AA2[[1]])
   }
 
-  ff.tem=matrix(unlist(ff.list),nrow=num.sam,byrow = TRUE)
+  ff.tem=matrix(unlist(ff.list),ncol=dim(Z)[2],byrow = TRUE)
 
   if(min(apply(matrix(unlist(ff.list),nrow=num.sam,byrow = TRUE),1,function(x) max(abs(x))))!=0) {
 
