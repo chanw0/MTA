@@ -51,12 +51,12 @@ MTA_pattern=function(x,M,proportion.explained, k,Laplacian.matrix,timevec,lambda
   plot.data=data.frame(cbind(timevec,sapply(1:nrow(cc),function(x,cc,B){return(cc[x,]%*%t(B))},cc=cc,B=B)))
   colnames(plot.data)=c("time",paste(sapply(1:nrow(cc), toOrdinal), "common trend"))
 
-  plot.data=melt(plot.data,id.vars = 1)
+  plot.data=melt(plot.data,id.vars = 1,variable.name ="factor",value.name = "Escore")
 
-  pc.plot=ggplot(plot.data, aes(time, value))+geom_point()+
+  pc.plot=ggplot(plot.data, aes(time, Escore))+geom_point()+
     # geom_smooth(se=FALSE)+
     geom_line()+theme_bw()+ylab("Microbial common trend")+
-    facet_wrap(~variable,scales="free")
+    facet_wrap(~factor,scales="free")
 
   AA=list(pc.plot,ff,cc)
 

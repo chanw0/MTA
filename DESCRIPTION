@@ -1,14 +1,15 @@
 Package: MTA
-Title: Longitudinal microbiome data analysis: microbial trend analysis, group comparison and classification
+Title: Microbial Trend Analysis for Common Dynamic Trend, Group Comparison, and Classification in Longitudinal Microbiome Study
 Version: 0.1.0
-Date: 2019-12-24
+Date: 2021-06-23
 Author: Chan Wang, Jiyuan Hu, Martin J. Blaser, Huilin Li.
 Maintainer: Chan Wang <Chan.Wang@nyulangone.org> and Huilin Li <Huilin.Li@nyulangone.org>
 Description: Microbial trend analysis (MTA) framework is proposed for the high-dimensional and phylogenetic longitudinal microbiome data. The MTA framework can describe microbial dynamics, differential group difference, extract key taxa driving the microbial temporal trend, and classify the subjects, is a highly in-time and attractive analytical tool to study the dynamics of microbiome composition and identify key bacterial species that affect susceptibility to complex diseases.
-Depends: adephylo, fda, ggplot2, reshape2, toOrdinal, matlib, R (>= 3.6.1)
+Depends: R (>= 4.0.0)
+Imports: adephylo, fda, ggplot2, reshape2, toOrdinal, MASS, stats, utils
 License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
 URL: https://github.com/chanw0/MTA
 BugReports: http://github.com/chanw0/MTA/issues
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.1

@@ -2,7 +2,7 @@
 MTA=function(Y1,Y_new=NULL,phy.tree=NULL,timevec=NULL, transf="None",
              M=NULL,proportion.explained=0.85,
              k=5,lambda1.set=c(0.01,0.1,1,10),
-             lambda2.set=seq(0,2,0.1),lambda3.set=c(0),num.sam=10,alpha=0.05)
+             lambda2.set=seq(0,1,0.005),lambda3.set=c(0),num.sam=10,alpha=0.05)
 {
 
 ############### phylogentic tree to laplacian penalty
@@ -33,7 +33,7 @@ if (is.null(phy.tree)) Laplacian.matrix=NULL else {
       Y1[ii,,tt]=log(x) }} else {
 
       small.value=min(unlist(Y1)[unlist(Y1)!=0])/2
-      for(j in 1:lenght(Y1)) for (ii in 1:dim(Y1[[j]])[1]) for(tt in 1:dim(Y1[[j]])[3]) {x=Y1[[j]][ii,,tt];
+      for(j in 1:length(Y1)) for (ii in 1:dim(Y1[[j]])[1]) for(tt in 1:dim(Y1[[j]])[3]) {x=Y1[[j]][ii,,tt];
       if(min(x)==0) x=(x+small.value)/(sum((x+small.value)))
       Y1[[j]][ii,,tt]=log(x) }}
 
@@ -60,7 +60,7 @@ if (is.null(phy.tree)) Laplacian.matrix=NULL else {
       } else { YY2=list()
 
         small.value=min(unlist(Y1)[unlist(Y1)!=0])/2
-        for(j in 1:lenght(Y1)) {
+        for(j in 1:length(Y1)) {
 
           Y22=Y1[[j]][,-dim(Y1[[j]])[2],]
 
@@ -95,7 +95,7 @@ if (is.null(phy.tree)) Laplacian.matrix=NULL else {
         Y1[ii,,tt]=log(x/(cumprod(x)[length(x)])^(1/length(x))) }} else {
 
           small.value=min(unlist(Y1)[unlist(Y1)!=0])/2
-          for(j in 1:lenght(Y1)) for (ii in 1:dim(Y1[[j]])[1]) for(tt in 1:dim(Y1[[j]])[3]) {x=Y1[[j]][ii,,tt];
+          for(j in 1:length(Y1)) for (ii in 1:dim(Y1[[j]])[1]) for(tt in 1:dim(Y1[[j]])[3]) {x=Y1[[j]][ii,,tt];
           if(min(x)==0) x=(x+small.value)/(sum((x+small.value)))
           Y1[[j]][ii,,tt]=log(x/(cumprod(x)[length(x)])^(1/length(x))) }}
 

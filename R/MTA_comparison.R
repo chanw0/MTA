@@ -7,7 +7,7 @@ MTA_comparison=function(Controls, Cases,k,Laplacian.matrix,timevec,lambda1.set,
   N=min(N1,N2)
 
   T=dim(Controls)[3]
-  if(is.null(timevec)) timevec=timevec=1:T
+  if(is.null(timevec)) timevec=1:T
 
   BS = create.bspline.basis(timevec, norder=4)
   B = getbasismatrix(timevec, BS)  #basis function
@@ -56,6 +56,10 @@ MTA_comparison=function(Controls, Cases,k,Laplacian.matrix,timevec,lambda1.set,
     cc.reference=rbind(cc.reference,AA2[[1]])
   }
 
+  ff.tem=matrix(unlist(ff.list),nrow=num.sam,byrow = TRUE)
+
+  if(min(apply(matrix(unlist(ff.list),nrow=num.sam,byrow = TRUE),1,function(x) max(abs(x))))!=0) {
+
   num.tpc=max(sapply(1:num.sam, function(x,cc.list) dim(cc.list[[x]])[1], cc.list=cc.list))
 
   sin.re=matrix(NA,nrow=num.sam,ncol=(num.tpc+1))
@@ -90,14 +94,14 @@ MTA_comparison=function(Controls, Cases,k,Laplacian.matrix,timevec,lambda1.set,
       common.trend=data.frame(common.trend,time=1:nrow(common.trend),trend=rep(j,nrow(common.trend)))
       Alltrend=rbind(Alltrend,common.trend) }
 
-    plot.data=melt(Alltrend,id=c("time","trend"))
+    plot.data=melt(Alltrend,id=c("time","trend"),variable.name ="factor",value.name = "Escore")
 
     plot.data$trend=sapply(plot.data$trend, toOrdinal)
     plot.data$trend=paste(plot.data$trend, "common trend")
 
-    qq=ggplot(plot.data, aes(x=time, y=value, group = variable))+
-      geom_line() +geom_point()+theme_bw()+scale_x_continuous(breaks=unique(plot.data$time))+
-      facet_wrap(~trend,scales="free_y")
+    # qq=ggplot(plot.data, aes(x=time, y=Escore, group = factor))+
+    #   geom_line() +geom_point()+theme_bw()+scale_x_continuous(breaks=unique(plot.data$time))+
+    #   facet_wrap(~trend,scales="free_y")
 
     ########### Discovery rate
 
@@ -111,11 +115,11 @@ MTA_comparison=function(Controls, Cases,k,Laplacian.matrix,timevec,lambda1.set,
       SE=rbind(SE,c(j,SD/sqrt(num.sam)))
     }
 
-Allresults=list(pvalue.tpc,qq,AllDiscover,Effect,SE)
+Allresults=list(pvalue.tpc,plot.data,AllDiscover,Effect,SE)
 
-names(Allresults)=c("P value","Trend plot","Discover rate", "Factor score", "Standard error")
+names(Allresults)=c("P value","Trends","Discover rate", "Factor score", "Standard error")
 
 } else {Allresults=list(pvalue.tpc);
-     names(Allresults)=c("P value")}
+     names(Allresults)=c("P value")}} else Allresults="None of taxa were selected. The Lasso penalty is too strict, please select a more merciful range"
 
   return(Allresults) }

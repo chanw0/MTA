@@ -6,8 +6,8 @@ trend.coef.func = function(f,x,B, Om, lambda1){
 
   N=dim(x)[1]
 
-  ## Ginv instead of solve
-  theta = Ginv(N*t(B)%*%B+lambda1*Om)%*%(t(B))%*%(t(apply(x, c(2,3), sum)))%*%f
+  ## ginv instead of solve
+  theta = ginv(N*t(B)%*%B+lambda1*Om)%*%(t(B))%*%(t(apply(x, c(2,3), sum)))%*%f
 
   return(as.vector(theta))
 }
@@ -26,8 +26,8 @@ score.func=function(c,x,B, Laplacian.matrix, lambda2,lambda3) {
 
   tem.eq1=t(c)%*%(t(B))%*%(t(apply(x, c(2,3), sum)))
 
-  if(is.null(Laplacian.matrix)) tem.eq2=Ginv(diag(c(N*t(c)%*%(t(B))%*%B%*%c),P)) else tem.eq2=
-    Ginv(diag(c(N*t(c)%*%(t(B))%*%B%*%c),P)+lambda3*Laplacian.matrix)
+  if(is.null(Laplacian.matrix)) tem.eq2=ginv(diag(c(N*t(c)%*%(t(B))%*%B%*%c),P)) else tem.eq2=
+    ginv(diag(c(N*t(c)%*%(t(B))%*%B%*%c),P)+lambda3*Laplacian.matrix)
 
   # tem.eq2=solve(N*kronecker(t(c)%*%(t(B))%*%B%*%c, diag(1,P))+lambda3*Laplacian.matrix)
   # lambda2=BinarySearch(tem.eq1,sumabs)
