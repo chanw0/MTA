@@ -11,7 +11,7 @@ Microbial trend analysis (MTA) framework is an attractive and effective tool in 
 Package: \tab MTA\cr
 Type: \tab Package\cr
 Version: \tab 1.0\cr
-Date: \tab 2021-06-23\cr
+Date: \tab 2021-07-06\cr
 License: \tab GPL (>= 2)\cr
 }
 }

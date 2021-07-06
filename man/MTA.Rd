@@ -10,7 +10,7 @@ This overall function performs three tasks: 1) capturing the common and major co
 MTA(Y1,Y_new=NULL,phy.tree=NULL,timevec=NULL, transf="None",
              M=NULL,proportion.explained=0.85,
              k=5,lambda1.set=c(0.01,0.1,1,10),
-             lambda2.set=seq(0,1,0.005),lambda3.set=c(0),num.sam=10,alpha=0.05)
+             lambda2.set=seq(0,1,0.001),lambda3.set=c(0),num.sam=10,alpha=0.05)
 }
 
 \arguments{
@@ -49,7 +49,7 @@ A numeric vector containing the candidate tunning parameters for the smoothing t
 }
 
 \item{lambda2.set}{
-A numeric vector containing the candidate tunning parameters for the Lasso penalty to deal with the high dimensionality of taxa. Default=seq(0,1,0.005).
+A numeric vector containing the candidate tunning parameters for the Lasso penalty to deal with the high dimensionality of taxa. Default=seq(0,1,0.001).
 }
 
 \item{lambda3.set}{
@@ -103,104 +103,44 @@ Wang C, Hu J, Blaser M J, Li H (2021). Microbial Trend Analysis for Common Dynam
 
 \examples{
 
-# ########### generation data
-# library(dirmult)
-# ## sample size
-# N=20;
-# ## time point
-# T=10;
-# ##number of taxa
-# P=30;
-#
-# beta0=abs(rnorm(P,10,20))
-# ## key taxa
-# causal.ind=sample(1:20,3)
-#
-# #### generating two groups
-# group1=array(NA, dim = c(N,P,T))
-# for(t in 1:T)  group1[, ,t] = rdirichlet(N,(beta0))
-#
-# group2=array(NA, dim = c(N,P,T))
-# for(t in 1:T){
-#   betaT=rep(0,P)
-#   effect.size1=c(-1,2, -1)/2*min(beta0[causal.ind])*sin(t)
-#   betaT[causal.ind]=effect.size1
-#   group2[, ,t] = rdirichlet(N,(beta0+betaT))}
-#
-#
-# ########## MTA captures the common trends shared by all subjects in group1
-# ### extracting the common trend from a group of subjects with explained variation >=85%
-# MTA(Y1=group1)
-#
-# ### extracting the common trend from a group of subjects with 2 common trends
-# MTA(Y1=group1,M=2)
-#
-#
-# ######## comparing between group1 and group2
-# MTA(list(group1,group2))
-#
-#
-# ######## classifying subjects based on the training set
-# MTA(list(group1,group2),group2[1:5,,])
-#
-#
-#
-######## Real data analysis
-######## The results has a slight difference due to different random seeds
+########### generation data
+library(dirmult)
+## sample size
+N=20;
+## time point
+T=10;
+##number of taxa
+P=20;
 
-# library(ggpubr)
-# library(plyr)
-# library(reshape2)
-#
-# Control=Realdata[[1]]
-# STAT=Realdata[[2]]
-# phy.tree=Realdata[[3]]
-#
-# ### Group comparison
-#
-# aa=MTA(list(Control,STAT),phy.tree=phy.tree,k=10,lambda1.set = 1,
-#              lambda2.set=seq(0,0.3,0.001),num.sam=50)$`Comparison between group 1 and group 2`
-#
-#
-# aa1=aa[[4]]
-# aa2=aa[[5]]
-#
-# for(i in 1:nrow(aa2)) {
-#
-#   bb1=aa1[i,-1];bb2=aa2[i,-1]
-#   bb=order(bb1^2/sum(bb1^2),decreasing =TRUE)
-#   bb1[-c(bb[1:which(cumsum(cumsum(sort(bb1^2/sum(bb1^2),decreasing =TRUE))>0.99)==1)])]=0
-#
-#   bb1[((bb1+1.96*bb2)>=0 & (bb1-1.96*bb2)<=0)]=NA
-#
-#   aa1[i,-1]=bb1
-# }
-# effect1=aa1
-# colnames(effect1)=c("trend",unlist(dimnames(Control)[2]))
-# effect1=data.frame(effect1,check.names =FALSE)
-# effect1=melt(effect1,id.vars = 1,variable.name = "taxa",value.name = "score")
-# effect1$trend=revalue(as.character(effect1$trend), c("1"="1st common trend"))
-#
-# effect1=na.omit(effect1)
-#
-# pp1=ggbarplot(effect1, x = "taxa", y = "score",
-#               ylab = "Estimated factor score", xlab="", facet.by = "trend",
-#               add = "mean")+
-#   facet_wrap(~trend,scales="free")+theme(axis.text.x = element_text(angle = 90, hjust = 1))
-#
-# ######### trend figure
-#
-# trend1=aa[[2]]
-# trend1$time=mapvalues(as.character(trend1$time), from = as.character(1:4), to = as.character(c(3,6,10,13)))
-# trend1$time=as.numeric(trend1$time)
-#
-# pp2=ggline(trend1, x = "time",y = "Escore",
-#            ylab = "Common trend", xlab="Week", facet.by = "trend",
-#            add = "mean")+
-#   facet_wrap(~trend,scales="free_y")
-#
-#
-# ggarrange(pp2,pp1,labels = c("(A)", "(B)"), ncol = 2)
+beta0=abs(rnorm(P,10,20))
+## key taxa
+causal.ind=sample(1:P,3)
+
+#### generating two groups
+group1=array(NA, dim = c(N,P,T))
+for(t in 1:T)  group1[, ,t] = rdirichlet(N,beta0)
+
+group2=array(NA, dim = c(N,P,T))
+for(t in 1:T){
+  betaT=rep(0,P)
+  betaT[causal.ind]=c(-1,2, -1)/2*min(beta0[causal.ind])*sin(t)
+  group2[, ,t] = rdirichlet(N,(beta0+betaT))}
+
+
+########## MTA captures the common trends shared by all subjects in group1
+### extracting the common trend from a group of subjects with explained variation >=85%
+MTA(Y1=group1)
+
+### extracting the common trend from a group of subjects with 2 common trends
+MTA(Y1=group1,M=2)
+
+
+######## comparing between group1 and group2
+MTA(list(group1,group2))
+
+
+######## classifying subjects based on the training set
+MTA(list(group1,group2),group2[1:5,,])
 
 }
 

@@ -2,7 +2,7 @@
 MTA=function(Y1,Y_new=NULL,phy.tree=NULL,timevec=NULL, transf="None",
              M=NULL,proportion.explained=0.85,
              k=5,lambda1.set=c(0.01,0.1,1,10),
-             lambda2.set=seq(0,1,0.005),lambda3.set=c(0),num.sam=10,alpha=0.05)
+             lambda2.set=seq(0,1,0.001),lambda3.set=c(0),num.sam=10,alpha=0.05)
 {
 
 ############### phylogentic tree to laplacian penalty

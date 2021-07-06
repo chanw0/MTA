@@ -16,8 +16,9 @@ MTA_comparison=function(Controls, Cases,k,Laplacian.matrix,timevec,lambda1.set,
   cc.list=ff.list=list()
   res=cc.reference=NULL
 
-  for(rr in 1:num.sam)
-  {
+  rr=1
+  while (rr<100) {
+
     aa1=sample(1:N2,floor(N/5*4));aa2=sample(1:N1,floor(N/5*4))
     #aa1=sample(1:N2,N);aa2=sample(1:N1,N)
 
@@ -44,21 +45,29 @@ MTA_comparison=function(Controls, Cases,k,Laplacian.matrix,timevec,lambda1.set,
 
     if(is.null(dim(cc))) {cc=t(cc);ff=as.matrix(ff)}
 
-    cc.list[[rr]]=cc;ff.list[[rr]]=ff
+    if (min(apply(abs(ff),2,max))==0) rr=rr-1 else {
 
-    aa1=sample(1:N1,floor(N1/2))
-    aa2=setdiff(1:N1,aa1); aa3=min(length(aa1),length(aa2))
 
-    Z=Controls[aa1[1:aa3],,]-Controls[aa2[1:aa3],,]
-    AA2=MTA01(Z,k,Laplacian.matrix,timevec,lambda1.set,lambda2.set=seq(0,0.1,0.005),lambda3.set)
-    ##lambda2.set=seq(0,0.2,0.001)
+      cc.list[[rr]]=cc;ff.list[[rr]]=ff
 
-    cc.reference=rbind(cc.reference,AA2[[1]])
-  }
+      aa1=sample(1:N1,floor(N1/2))
+      aa2=setdiff(1:N1,aa1); aa3=min(length(aa1),length(aa2))
+
+      Z=Controls[aa1[1:aa3],,]-Controls[aa2[1:aa3],,]
+      AA2=MTA01(Z,k,Laplacian.matrix,timevec,lambda1.set,lambda2.set=seq(0,0.1,0.005),lambda3.set)
+      ##lambda2.set=seq(0,0.2,0.001)
+
+      cc.reference=rbind(cc.reference,AA2[[1]])
+    }
+
+    if(rr==num.sam) break;
+    rr=rr+1
+     }
+
 
   if(min(apply(matrix(unlist(ff.list),ncol=dim(Z)[2],byrow = TRUE),1,function(x) max(abs(x))))!=0) {
 
-  num.tpc=max(sapply(1:num.sam, function(x,cc.list) dim(cc.list[[x]])[1], cc.list=cc.list))
+  num.tpc=max(sapply(1:num.sam, function(x,tem.list) return(dim(tem.list[[x]])[1]), tem.list=cc.list))
 
   sin.re=matrix(NA,nrow=num.sam,ncol=(num.tpc+1))
   for(i in 1:num.sam) { tem.va=rowSums((cc.list[[i]]%*%(t(B)))^2);
