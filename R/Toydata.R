@@ -63,12 +63,10 @@
 #'ggarrange(pp2,pp1,labels = c("(A)", "(B)"), ncol = 2)
 #'
 #'#### Classification
-#'aa=MTA(list(Control,Case),Case, phy.tree=phy.tree)$`Comparison between group 1 and group 2`
+#'aa=MTA(list(Control,Case),Case, phy.tree=phy.tree)
 #'
-#'### Subject ID
-#'aa$`New subject`
 #'### Group label 1: the first group (Control); 2: the second group (Case)
-#'aa$`Group label`
+#'print(aa)
 #'
 "Toydata"
 
